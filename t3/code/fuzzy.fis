@@ -1,0 +1,63 @@
+[System]
+Name='fuzzy_controler'
+Type='mamdani'
+Version=2.0
+NumInputs=2
+NumOutputs=3
+NumRules=9
+AndMethod='min'
+OrMethod='max'
+ImpMethod='min'
+AggMethod='max'
+DefuzzMethod='centroid'
+
+[Input1]
+Name='luz'
+Range=[0 5]
+NumMFs=3
+MF1='pocaLuz':'trapmf',[0 0.4 0.75 1.25]
+MF2='normalLuz':'trapmf',[0.75 1.5 3.5 4]
+MF3='muchaLuz':'trapmf',[2.75 3.75 4.75 5]
+
+[Input2]
+Name='temperatura'
+Range=[0.02 0.6]
+NumMFs=3
+MF1='fria':'trapmf',[0.02 0.08 0.14 0.2]
+MF2='templada':'trapmf',[0.15 0.18 0.25 0.28]
+MF3='caliente':'trapmf',[0.25 0.3 0.5 0.6]
+
+[Output1]
+Name='persianas'
+Range=[0 0.5]
+NumMFs=3
+MF1='pocaApertura':'trapmf',[0 0.0375 0.118 0.15]
+MF2='regularApertura':'trapmf',[0.1 0.156 0.292283298097252 0.35]
+MF3='muchaApertura':'trapmf',[0.25 0.325 0.424418604651163 0.49]
+
+[Output2]
+Name='ventilador'
+Range=[0 1]
+NumMFs=3
+MF1='lento':'trapmf',[0 0.1 0.2 0.375]
+MF2='regular':'trapmf',[0.131 0.3 0.6 0.75]
+MF3='alto':'trapmf',[0.65 0.75 0.95 1]
+
+[Output3]
+Name='calefaccion'
+Range=[0 5]
+NumMFs=3
+MF1='pocaEmision':'trapmf',[0 0.25 0.75 1]
+MF2='regularEmision':'trapmf',[0.75 1.5 2.25 3]
+MF3='muchaEmision':'trapmf',[2.25 3 4 5]
+
+[Rules]
+1 1, 3 1 3 (1) : 1
+1 2, 2 1 2 (1) : 1
+1 3, 2 3 1 (1) : 1
+2 1, 2 1 3 (1) : 1
+2 2, 2 2 1 (1) : 1
+2 3, 2 3 1 (1) : 1
+3 1, 2 1 3 (1) : 1
+3 2, 2 1 1 (1) : 1
+3 3, 1 3 1 (1) : 1
