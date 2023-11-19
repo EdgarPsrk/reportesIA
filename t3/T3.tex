@@ -23,10 +23,10 @@
 
 
 %variables de color
-% \definecolor{greenPortada}{HTML}{69A84F}
-%\definecolor{lineCabecera}{HTML}{5DADE2}
-\definecolor{lineCabecera}{HTML}{008080}
-%\definecolor{lineCabecera}{HTML}{FF4500}
+\definecolor{greenPortada}{HTML}{69A84F}
+\definecolor{CabeceraAcero}{HTML}{5DADE2}
+\definecolor{Cabeceraverde}{HTML}{008080}
+\definecolor{CabeceraTomate}{HTML}{FF4500}
 
 
 
@@ -35,7 +35,7 @@
 \pagestyle{fancy}
 \fancyhf{}
 \renewcommand{\headrulewidth}{3pt}
-\renewcommand{\headrule}{\hbox to \headwidth{\color{lineCabecera}\leaders\hrule height \headrulewidth\hfill}}
+\renewcommand{\headrule}{\hbox to \headwidth{\color{Cabeceraverde}\leaders\hrule height \headrulewidth\hfill}}
 
 %variables globales
 \newcommand{\control}{img/control.jpg}
@@ -69,9 +69,9 @@
 \lstset{
   language=Matlab,
   basicstyle=\ttfamily,
-  keywordstyle=\color{blue},
+  keywordstyle=\color{CabeceraAcero},
   commentstyle=\color{green!50!black},
-  stringstyle=\color{red},
+  stringstyle=\color{CabeceraTomate},
   numbers=left,
   numberstyle=\tiny,
   numbersep=5pt,
@@ -277,13 +277,4 @@
 
     \section{Conclusión}
     La flexibilidad inherente a la lógica difusa se ha demostrado en la capacidad del sistema para adaptarse a una variedad de situaciones y preferencias del usuario, sin la delimitación de un modelo matemático o un sistema bien definido, lo cual nos da  la posibilidad de ajustar fácilmente los conjuntos difusos así como las reglas que permite una personalización efectiva del sistema para diferentes escenarios adaptándose a las necesidades específicas de un entorno, también se puede destacar que a través de la validación en conjunto con la prueba del sistema en tiempo real han confirmado su capacidad para tomar decisiones de manera autónoma, respondiendo de manera coherente a las condiciones cambiantes del entorno en función de las reglas difusas que se generaron, se puede destacar la inteligibilidades que nos brinda las variables lingüísticas, comentar que siendo honestos se tienen palabras abstraídas siempre en todo contexto y que solo se requiere entender el funcionamiento o hacer la homologación se su funcionamiento a algo similar que entendamos mejor, para permitirnos realizar una fácil implementación de todo lo propuesto en este trabajo; lo anterior se puede notar en los conceptos como la fuzzificacion o la defusificación, que en conjunto han sido cruciales para convertir las salidas difusas en acciones tangibles y comprensibles, permitiendo una interacción efectiva con el entorno físico. Con lo cual en resumen, este proyecto ha demostrado que la lógica difusa Mamdani es una herramienta poderosa para el control adaptativo en entornos variables, a la vez que nos permitió ahondar más del tema para comprender la capacidad de modelar la imprecisión inherente en las condiciones ambientales, conjuntando con la flexibilidad para ajustarse a diversas situaciones que respaldan la utilidad de la lógica difusa en aplicaciones prácticas de control. Este enfoque contribuye significativamente a la creciente demanda de sistemas inteligentes y adaptables en diversos contextos, desde entornos domésticos hasta aplicaciones industriales.
- 
-
-    % \begin{figure}[H]
-    %     \centering
-    %     \includegraphics[width=\textwidth,height=10cm, keepaspectratio]{\control}
-    %     \caption{Diagrama a bloques de lazo cerrado}
-    %     \label{fig:control}
-    % \end{figure}
-    
 \end{document}
