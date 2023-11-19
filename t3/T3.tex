@@ -44,12 +44,16 @@
 \newcommand{\fuzzy}{img/variableFuzzy.jpeg}
 \newcommand{\imgA}{img/diag1.png}
 \newcommand{\imgB}{img/diag2.png}
-
+\newcommand{\sCompleto}{img/completo.png}
+\newcommand{\luz}{img/luz.png}
+\newcommand{\temperatura}{img/temp.png}
+\newcommand{\persianas}{img/per.png}
+\newcommand{\ventilador}{img/vent.png}
+\newcommand{\calefacion}{img/cale.png}
+\newcommand{\implementacion}{img/sistemaFisico.jpg}
 
 \newcommand{\codeA}{code/fuzzyS.m}
-
-
-
+\newcommand{\codeB}{code/fuzzy.fis}
 
 
 %gestion de hipervinculos
@@ -63,15 +67,18 @@
 }
 %gestor de codigo
 \lstset{
-    language=Matlab,
-    basicstyle=\ttfamily,
-    keywordstyle=\color{blue},    % Color de las palabras clave
-    commentstyle=\color{green},   % Color de los comentarios
-    numberstyle=\tiny\color{gray},% Color de los números de línea
-    stringstyle=\color{red},      % Color de las cadenas de texto
-    breaklines=true,
-    numbers=left,
-    frame=single,
+  language=Matlab,
+  basicstyle=\ttfamily,
+  keywordstyle=\color{blue},
+  commentstyle=\color{green!50!black},
+  stringstyle=\color{red},
+  numbers=left,
+  numberstyle=\tiny,
+  numbersep=5pt,
+  frame=single,
+  breaklines=true,
+  breakatwhitespace=true,
+  tabsize=2
 }
 
 \title{Control difuso}
@@ -160,36 +167,117 @@
     \subsection{defusificación.}
     La defusificación es la etapa crucial en un sistema de lógica difusa donde la salida difusa, expresada en conjuntos difusos, se convierte en un valor concreto para la toma de decisiones. Después de la inferencia difusa, que produce conjuntos difusos de salida, la defusificación busca resumir esta información en un valor numérico. Métodos comunes incluyen el uso del centro de gravedad, que encuentra el punto central ponderando los valores de salida por sus grados de membresía, y el método del valor máximo, que selecciona el valor máximo del conjunto difuso de salida como el resultado. La elección del método depende del contexto de la aplicación y los requisitos de precisión, siendo la defusificación esencial para traducir la información difusa en acciones o valores concretos en aplicaciones prácticas.
 
-
-
     
     \section{Metodología.}
-    La metodología de este sistema es poco complicada, teniendo un grado de mayor dificultad proporcionar las salidas y entradas correctas para enlazar los código entre los módulos para una única salida.
-    Abordando los módulos en el orden que me parece adecuado, podemos considerara que se requiere realizar un prescaler para que los cambios del reloj al leer los pulsos no sean muy rápidos, lo cual nos da la holgura necesaria en los módulos para leer de manera correcta todas las señales, generando las salidas de una manera satisfactoria. El módulo de “anti-rebote” obtiene mediante el módulo principal SYSTEM unos retrasos, que se verifican en el módulo de pulsos de reloj, el cual tiene como función principal, asegurarse de que los 3 retrasos se den sobre el reloj del preescaler, así los botones utilizados para las entradas quedan condicionados,  para que solo un señal de pulso se tome en cuenta, pasando el primer pulso entre los 3 retrasos, además se condiciona esta salida para verificar que todos sean iguales, generando de manera satisfactoria un solo pulso desde los botones de entrada, también en este módulo es donde se realiza la codificación, ya que se pasan los valores de los botones a los valores que utilizaremos  sobre el código final.
-    Contamos con el módulo de las máquinas de estado que es donde se manejan las situaciones posible en base al diseño principal como en la figura~\ref{fig:estados}, el cual consiste en colocar  digamos 2 “caminos” diferentes por lo cuales se puede llegar a una salida, esto debido a el planteamiento del problema donde se requiere que la salida se de hasta tener las 4 iteraciones que requiere el dígito para ser correcto, que si se considera, esto tiene sentido ya que al ser un sistema de seguridad no debería de dar pista de donde están los errores, así que se limita a tener una salida de \emph{aprobado} o \emph{fallo} en cada iteración completa del sistema, así que si pasamos por los estados $ \{q_0,q_1,q_2,q_3\} $ generamos un valor correcto y obtendremos una señal de \emph{aprobado}, mientras que si erramos algun digito, podemos pasar por los estados $\{q_4,q_5,q_6\}$, que manejan los errores para completar la iteración de 4 digitos, así mismo tenemos una particularidad que es que los valores intermedios pasan del camino correcto al manejo de errores en los estados $\{q_0,q_1,q_2\}$, pero en el estado $q_3$, el error se maneja sobre el mismo estado dando salida a diferentes valores, si el codigo es correcto activaremso la señal de \emph{aprobado}, mientras que si el codigo esta mal sobre ese ultimo dígito daremos paso a  la salida de \emph{fallo} , por ultimo como se dijo el modulo de \emph{system}, une las señales pasando el reloj principal al preescaler, la salida de este modulo al modulo de pulsos e reloj, que a su vez da parte de las entradas al modulo de entirrebote, tambien se pasan los valores de los botones pulsados, asegurando la lectura de un solo valor y pasando los valores de estos a el modulo de las maquinas de estado, el cual como se dijo da paso a la señales aprobado o fallo, dichas señales se puede interpretar de manera fisica sobre la tarjeta al ver el $led_0$ para fallo y $led_1$ para aprobado, el valor del codigo a verificar es determinado por el vector \emph{secret\_code} que se lee sobre este mismo modulo. dicho valor se obtiene a través de los switch 0 a 7 de la tarjeta \emph{Basys 3}.
+    Para el desarrollo del sistema se utilizó Matlab con el paquete “MATLAB Support Package for Arduino Hardware”  para poder hacer uso de la placa arduino uno como interfaz de adquisición de datos de los sensores además de poder mandar los valores de las salidas a los actuadores, también se hace uso “Fuzzy logic toolbox”, con el cual se hizo la creación de la lógica difusa, a través de la interfaz gráfica que brinda ella paqueteria se pudo desarrollar el siguiente código~\ref{lst:fis}.
+    %\clearpage
+    \lstinputlisting[caption={Ejemplo de código MATLAB.}, label=lst:fis, title={ código 1 : Archivo del sistema de control difuso Mamdani}]{\codeB}
 
+    Podemos observar en la figura~\ref{fig:completo} el modelo completo utilizado en el diseño.
+
+    \begin{figure}[H]
+        \centering
+        \includegraphics[width=0.8\linewidth]{\sCompleto}
+        \caption{Sistema difuso completo}
+        \label{fig:completo}
+    \end{figure}
+
+    Se tiene como entrada los valores proporcionados por una resistencia variable LDR, así como un termistor, los cuales son encargado de sensar las condición relevante para el sistema y en función de los parámetros, que dependiendo del valor de entrada adecuado que se encontró se presentan los valores de entrada, donde como se aprecia en la figura~\ref{fig:nter} las escalas son distintas esto varía en función de los datos adquiridos durante las pruebas del sistema y determinación de que estos son los valores donde a nosotros nos convenía la activación o determinación de las variables lingüísticas de este sistema, ya que como se dijo de manera recurrente el sistema, gracias a esta interfaz gráfica se puede modificar de una maner a simple al variar estos valores y tener su propio conjunto de reglas difusas para adecuarse al ambiente o necesidades para cumplir con sus objetivo a través de este sistema.
+
+    \begin{figure}[H]
+        \centering
+        \begin{subfigure}{0.8\linewidth}
+            \includegraphics[width=\linewidth]{\luz}
+            \caption{Conjunto difuso luz}
+            \label{sub:luz}
+        \end{subfigure}
+        \begin{subfigure}{0.8\linewidth}
+            \includegraphics[width=\linewidth]{\temperatura}
+            \caption{Conjunto difuso temperatura}
+            \label{sub:temp}
+        \end{subfigure}
+        \caption{Entradas}
+        \label{fig:nter}
+    \end{figure}
+
+    Las salidas del sistema se puede considerara cualquier actuador, para simplificación de este sistema se colocaron leds en las pruebas y la intensificación de este es donde se determinó cual es el valor adecuado de dichas salidas, la interacción con motores o demás actuadores se puede considera para un paso final donde se realice una etapa intermedia (si así lo requiere) para obtener un correcto funcionamiento de dicha salida, de igual manera en la figura~\ref{fig:out} se pueden apreciar los valores que se determinaron para el funcionamiento de este sistema.
+
+    \begin{figure}[H]
+        \centering
+
+        \begin{subfigure}{0.8\linewidth}
+            \includegraphics[width=\linewidth]{\persianas}
+            \caption{Conjunto difuso de las persinas}
+            \label{sub:per}
+        \end{subfigure}
+
+        \begin{subfigure}{0.8\linewidth}
+            \includegraphics[width=\linewidth]{\ventilador}
+            \caption{Conjunto difuso de el ventilador}
+            \label{sub:vent}
+        \end{subfigure}
+
+        \begin{subfigure}{0.8\linewidth}
+            \includegraphics[width=\linewidth]{\calefacion}
+            \caption{Conjunto difuso la calefacción }
+            \label{sub:cale}
+        \end{subfigure}
+
+        \caption{Salidas}
+        \label{fig:out}
+    \end{figure}
+
+    Considero de particular interés el hecho de que se tiene por decir de alguna manera 2 tipos de códigos, el que determina todo lo explicado hasta ahora, es decir la fase del control difuso a tavares del procesamiento de todos los datos adquiridos directamente de los puertos de la conexiones de arduino, pero ademas tenemos el codigo~\ref{lst:matlab} que define las propias acciones de arduino, esto lo considero de esta manera ya que tenemos diferentes etapas, que denominaría yo para el uso simple, ya que en el análisis de resultados no hay mayor complejidad al observar el sistema, pero el trasfondo de este sistema es eso que considero interesante, ya que para el usos particular del microcontrolador no se requiere hacer un manejo de registros con un lenguaje de bajo de bajo nivel, si no que hay una abstracción y en pocas lineas de código se puede lograr esto, anteriormente, se trató de implementar un sistema con Python, el cual fue la causa de que me diera cuenta de esta parte, ya que como se dijo de alguna manera se pueden considerar etapas intermedias unidas a través de \emph{“algo”}, que en este caso es el propio Matlab, lo que simplifica aun  mas las cosas, pero puede dejar de lado todo lo que existe debajo para esta implementacion final.
+
+    \lstinputlisting[caption={Ejemplo de código MATLAB.}, label=lst:matlab, title={ código 2: Script Matlab }]{\codeA}
+    En última instancia se deja una explicación de los puntos claves de las pocas líneas de código implementadas para el funcionamiento y conjunción de la placa arduino.
+
+    \begin{itemize}
+
+        \item Inicialización de Arduino: Se inicia la conexión con Arduino mediante el uso de la función `arduino()` y se asigna a la variable `a`.
+        \item Configuración de Sensores y Actuadores: Se especifican los pines utilizados para los sensores de luz y temperatura (`light\_sensor` y `temp\_sensor` respectivamente), así como los actuadores como persianas (`blinds`), un ventilador (`fan`), y un componente para controlar la temperatura (`temp`).
+        \item Bucle Principal (While): Se establece un bucle infinito (`while 1`) para mantener la ejecución continua del sistema.
+        \item Lectura de Sensores: Se utilizan las funciones `readVoltage` de Arduino para medir los voltajes provenientes de los sensores de luz y temperatura (`volt\_light` y `volt\_temp` respectivamente).
+        \item Carga del Controlador Difuso (FIS): Se carga el controlador difuso desde un archivo FIS (Sistema de Inferencia Difusa) utilizando la función `readfis`.
+        \item Evaluación del Controlador Difuso: Se utiliza la función `evalfis` para evaluar el controlador difuso con los valores de entrada proporcionados por los sensores (`volt\_light` y `volt\_temp`).
+        \item Modificación de las salidas: Se utiliza la salida del controlador difuso (`x`) para controlar los actuadores. En este caso, se ajusta la posición de las persianas (`writePosition`), la velocidad del ventilador (`writePWMDutyCycle`), y la tensión de un componente para controlar la temperatura (`writePWMVoltage`).
+        
+    \end{itemize}
+
+    Como resultado este código representa un sistema de control difuso en tiempo real que ajusta la posición de las persianas, la velocidad del ventilador y la temperatura según las condiciones de luz y temperatura detectadas por los sensores.
+    
 
     \section{Análisis de resultados.}
 	Una vez establecido el diseño, los conjuntos y las reglas para el controlador se realizan los cálculos necesarios para obtener los valores de pertenencia, con estos y usando las reglas del controlador podemos obtener los resultados de salida.
+
 	\begin{figure}[!h]
 		\centering
 		\includegraphics[scale=0.5]{\imgA}
 		\caption{Gráfico en el comportamiento del controlador difuso.}
 	\end{figure}
+
 	Por cada una de las reglas se van analizando las relaciones de pertenencia a las que corresponden sus respectivas entradas y estas se van uniendo en la gráfica final en la que se obtendrá la figura final y en ella se tomará su centroide el cual será la salida a sus correspondientes dispositivos.\newline \\
 	Con ayuda de la gráfica se aprecia que las salidas del controlador se van adaptando cada vez que se hace un cambio de modo que se obtiene de forma automática un valor adecuado según cada situación.\newline \\
 	En el siguiente gráfico se observa como el controlador va tomando los valores de entrada tras calcular los valores de pertenencia determina en que situación se encuentra el entorno de modo que puede aumentar la apertura de las persianas para captar más luz además de determinar que la temperatura es adecuada por lo que buscará mantenerla en el mismo valor.
+
 	\begin{figure}[!h]
 		\centering
 		\includegraphics[scale=0.5]{\imgB}
 		\caption{Resultados al tomar entradas de poca luz y a baja temperatura.}
 	\end{figure}
     
+    En última instancia se hizo la implementación física del sistema que se muestra en la figura~\ref{fig:fisico} con un LDR un termistor, un servomotor y un motor dc de 5v, todos conectados a la placa y se verificó el correcto funcionamiento con esta implementación, los cuales dieron una respuesta satisfactoria a todas las proposiciones del sistema, lo cual no permitió interactuar con el entorno, el ensamble no es el mejor de manera estética, pero solo se deseaba probar el funcionamiento de lo propuesto durante todo este proyecto, a fin de cuentas debido a su flexibilidades puede ser implementado sobre diferentes situaciones que se pueden adaptar y con actuadores diversos haciendo las modificaciones para el acoplamiento satisfactorio.
+
+	\begin{figure}[!h]
+		\centering
+		\includegraphics[width=\textwidth,height=10cm, keepaspectratio]{\implementacion}
+		\caption{Sistema fisico implementado}
+        \label{fig:fisico}
+	\end{figure}
 
     \section{Conclusión}
-    Este proyecto ha logrado el objetivo de crear un sistema de control de acceso seguro y eficiente mediante la combinación de VHDL en Vivado. Aunque la metodología puede parecer compleja en un principio, la modularidad de los componentes ha facilitado su desarrollo, así como el mantenimiento que se le pueda dar. Además, el sistema se ha diseñado teniendo en cuenta la seguridad y la usabilidad, lo que puede llevarlo a escalar a una solución sólida para el control de acceso a una puerta con código secreto. Como futuras mejoras, se podrían explorar posibilidades de la integración con sistemas de control más amplios, hemos logrado desarrollar un diseño modular, cuya estructura de módulos, que incluye el prescaler, el anti-rebote y las máquinas de estado, ha demostrado ser altamente efectiva en el manejo de las señales de entrada, así como en la generación de salidas adecuadas que podemos verificar mediante los diagramas de tiempos obtenidos de la simulación, también la implementación de la lógica de codificación asegura una comparación precisa con el código secreto, mediante la configuración que se pueda dar mediante los switch. La retroalimentación visual mediante LED simplifica la interacción con el sistema. La gestión de errores y la separación de caminos para aprobación y fallo mejoran aún más la seguridad, ya que como se comentó, esto deja sin pistas de donde está en el error, si bien el sistema es pequeño se puede considerar que, teniendo esto como base se podría desarrollar un sistema más robusto bajo la misma línea de pensamiento, cosa que dependiendo de la metodología de desarrollo que se tenga puede cambiar o no, que en lo personal creo que cambiaria, pero seria interesante ver cuales son esos cambios a efectuar sobre el sistema y como la mayoría de cosas en ingenieria, saber que tanto estábamos cerca de algo viable o no.   
-
-
+    La flexibilidad inherente a la lógica difusa se ha demostrado en la capacidad del sistema para adaptarse a una variedad de situaciones y preferencias del usuario, sin la delimitación de un modelo matemático o un sistema bien definido, lo cual nos da  la posibilidad de ajustar fácilmente los conjuntos difusos así como las reglas que permite una personalización efectiva del sistema para diferentes escenarios adaptándose a las necesidades específicas de un entorno, también se puede destacar que a través de la validación en conjunto con la prueba del sistema en tiempo real han confirmado su capacidad para tomar decisiones de manera autónoma, respondiendo de manera coherente a las condiciones cambiantes del entorno en función de las reglas difusas que se generaron, se puede destacar la inteligibilidades que nos brinda las variables lingüísticas, comentar que siendo honestos se tienen palabras abstraídas siempre en todo contexto y que solo se requiere entender el funcionamiento o hacer la homologación se su funcionamiento a algo similar que entendamos mejor, para permitirnos realizar una fácil implementación de todo lo propuesto en este trabajo; lo anterior se puede notar en los conceptos como la fuzzificacion o la defusificación, que en conjunto han sido cruciales para convertir las salidas difusas en acciones tangibles y comprensibles, permitiendo una interacción efectiva con el entorno físico. Con lo cual en resumen, este proyecto ha demostrado que la lógica difusa Mamdani es una herramienta poderosa para el control adaptativo en entornos variables, a la vez que nos permitió ahondar más del tema para comprender la capacidad de modelar la imprecisión inherente en las condiciones ambientales, conjuntando con la flexibilidad para ajustarse a diversas situaciones que respaldan la utilidad de la lógica difusa en aplicaciones prácticas de control. Este enfoque contribuye significativamente a la creciente demanda de sistemas inteligentes y adaptables en diversos contextos, desde entornos domésticos hasta aplicaciones industriales.
+ 
 
     % \begin{figure}[H]
     %     \centering
@@ -197,6 +285,5 @@
     %     \caption{Diagrama a bloques de lazo cerrado}
     %     \label{fig:control}
     % \end{figure}
-
     
 \end{document}
