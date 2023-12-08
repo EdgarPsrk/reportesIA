@@ -1,0 +1,5 @@
+train: ./salida/YOLODataset/images/train/
+val: ./salida/YOLODataset/images/val/
+test: ./salida/YOLODataset/images/test/
+nc: 4
+names: ["Play", "Pause", "V-", "V+"]
