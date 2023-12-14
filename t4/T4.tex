@@ -86,13 +86,14 @@
 \begin{document}
     \maketitle 
     \begin{abstract}      
-        El uso de las redes neuronales convolucionales \emph{(RNC)} se da a partir de un mejor manejo de imágenes a través de esta, que haciendo uso de redes neuronales con funciones lineales. Esto en conjunto con la capacidad de cómputo dispuesta en aumento, permiten su implementación, ya que a través de una tarjeta gráfica pequeña pero potente se pudo realizar el procesamiento de 4 imágenes que se etiquetaron pero no se trataron tomando en cuenta un conjunto de datos sin un tratamiento adecuado que si bien es posible encontrarlo en la realidad no es sencillo realizarlo, lo cual puede dificultar la implementación para un proyecto concreto donde, como este caso, se busca responder a casos específicos como señales de activación para un sistema. 
+        El uso de las redes neuronales convolucionales \emph{(RNC)} se da a partir de un mejor manejo de imágenes a través de esta, comparado con el uso de redes neuronales con funciones lineales. Esto en conjunto con la capacidad de cómputo dispuesta en aumento, permiten su implementación, ya que a través de una tarjeta gráfica pequeña pero potente se pudo realizar el procesamiento de 4 patrones en diferentes imágenes que se etiquetaron y trataron tomando en cuenta que un conjunto de datos sin un tratamiento adecuado es posible encontrarlo, pero en la realidad no es sencillo realizarlo, lo cual puede dificultar la implementación para un proyecto concreto donde, como este caso, se busca responder a casos específicos como señales de activación para un sistema. de esta manera es como a través de python, junto a diferentes librerías se logró reconocer la pose de una mano para realizar comandos como play o pausa en un reproductor de música.
     \end{abstract} 
     \vspace{2ex}
 
     \section{Introducción.}
-    El uso de redes neuronales de funciones lineales limitan las dimensiones o parámetros que se pueden trabajar en conjunto para el diseño de la red neuronal, ya que se busca segmentar la salida a un caso positivo o negativo sobre una línea recta como se puede observar en la figura~\ref{fig:lin}, cosa que se complica al tener más parámetros de entrada para el análisis, este caso se presenta en las imágenes al tener como entradas más de una dimensión para el análisis dejando un sistema mucho más complejo como en la figura~\ref{fig:nolin}, debido a esto es que se plantean las RNC que además de tener diferentes capas de entrada tiene la particularidad de usar redes simples que extraen características particulares cada una, las cuales pasan a otra neurona que agrupa dichas características para determinar un patrón más complejo sobre la imagen, de esta manera es que se pueden reconocer curvas y líneas en conjunto para determinar que algo es una mano o una manzana, este modelo está basado en el sistema de neuronas en la corteza visual primaria de un cerebro biológico. 
-    El proceso de extracción de información resulta interesante debido a que en el caso más simple, el cual se representa por un arreglo unidimensional donde se puede extraer el valor de 0 y 1 a valores discretos en el intervalo de 0 a 255, (una escala de grises) se puede obtener un mapa de bits que representa sobre una imagen que valor de blanco o negro se puede obtener algo parecido a el sistema de control difuso, donde no se asigna un valor absoluto del sistema si no que se segmenta sobre una escala y en función de esto se considera una reacción, pero esto representa una limitante, independientemente del color, de que se tiene una posición absoluta del arreglo de bits a identificar, esto genera confusión a las salidas ya que si deslizamos, rotamos, o manipulamos la imagen de alguna manera, esta perderá la coincidencia con dicho mapa, esto como se comentó anteriormente se arregla colocando o centrando la atención de la red sobre patrones básicos (líneas, curvas, etc.) que forman o resultan indispensable sobre la imagen, lo cuales se agrupan para formar un mapa de coincidencia de dichas figuras, de esta manera no importa si el arreglo de bits no coincide, lo que importa es que ciertos patrones estén presente sobre la imagen, además de que a mayor detalle más nutre a la red cosa que sin las RNC no ocurre ya que tener más de una dimensión genera funciones indeterminadas sobre las cuales no se puede obtener una segmentación correcta de los casos donde la salidas son correctas o no, así de esta manera si el color no es indispensable ayuda a tener un patrón de figuras básicas que determina si algo es una manzana o un perro, si además de eso se le agrega los 3 parámetros de color para determinar si una figura redonda es una uva, un coco o un melón, la red es más precisa al tener más detalles, pero estop requiere un data de mayor tamaño, esto con el fin de adecuar la RNC para que funcione de la mejor manera. 
+    El uso de redes neuronales de funciones lineales limitan las dimensiones o parámetros que se pueden trabajar en conjunto para el diseño de estas, ya que en las primeras se busca segmentar la salida a un caso positivo o negativo sobre una línea recta como en la figura~\ref{fig:lin}, cosa que se complica al tener más parámetros de entrada para el análisis como en la figura~\ref{fig:nolin}, este caso se presenta en las imágenes al tener como entradas más de una dimensión para el análisis dejando un sistema más complejo, debido a esto es que se plantean las RNC que además de tener una capa de entrada densa tiene la particularidad de usar redes simples que extraen características particulares, las cuales pasan a otras neurona que agrupa dichas características para determinar un patrón complejo sobre la imagen.\\
+    Esta propiedad se aplica a la visión por computadora donde tratamos de imitar la manera en que determinamos que algo es una manzana o un perro, si bien existen procesos que ya se encarga de realizar dicho entrenamiento la implementación de un sistema donde podamos hacer play, pausa, subir volumen o bajarlo es lo que se plantea en este proyecto, donde el enfoque que se tiene al mandar estos comandos a un reproductor pudiera manejarse de otra manera, bajo otras circunstancias para que los comando o pose de la mano que se realicen generen una salida distinta sobre un sistema; El proque hacer uso de esto cuando existen otras opciones bien podría ser porque esto es un comando a distancia donde no se tiene que tocar el dispositivo para interactuar con el, aunque tambien podemos hacer uso de los comandos por voz, esta propuesta puede fungir como complemento en los ambientes de mucho ruido donde no se factible distinguir la activación de los comandos debido a el ambiente, esta situacion se presenta sobre todo si las bocinas y el micrófono se encuentran cerca en el mismo dispositivo, debido a esto se puede hacer uso de estos comandos para crear un sistema más robusto que responda a mas tipos de ambientes en la vida cotidiana de los usuarios  generado una mayor comodidad en el uso de los dispositivos.\\
+    Se puede hacer énfasis en que es un comando a distancia donde puede resultar más fácil realizar una seña con la mano para generar una reacción del dispositivo comparando con el tener que gritar para hacer llegar la voz hasta el dispositivo, aunado a  esto se debe decir que como todo tiene limitantes ya que requerimos de estar capturando imágenes de manera constante, también se debe ser visibles para la cámara o mejor dicho estar en una posición donde las capturas de la cámara sean aceptables, que no es algo que sea imposible, con esto podemos decir que principalmente brinda una manera distinta de realizar comandos específicos a problemas específicos, solucionando problemas en ambientes de mucho ruido.
 
     \begin{figure}[H]
         \centering
@@ -166,13 +167,21 @@
     \end{itemize}
 
     \section{Metodología.}
-
+    
     \section{Análisis de resultados.}
 
     \section{Conclusión}
     \printbibliography
 
 \end{document}
+
+
+
+
+
+
+
+
 
 
     % \begin{equation}
