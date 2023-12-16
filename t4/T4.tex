@@ -97,8 +97,13 @@
 }
 
 %Encabezado
-\title{Comandos para un sistema a través de RNC}
-\author{Universidad Nacional Autónoma de México.\\Facultad de Estudios Superiores Cuatitlán.\\Palomino Alfonso Edgar.\\Vargas Gachuz Alonso}
+\title{Implementación de un control para sistemas de reproducción utilizando visión artificial con redes neuronales convolucionales}
+\author{		
+    Universidad Nacional Autónoma de México\\
+    Facultad de Estudios Superiores Cuautitlán\\
+    Alonso Vargas Gachuz\\
+    Edgar Palomino Alfonso
+}
 \date{\today}
 \cfoot{\thepage}
 
@@ -113,20 +118,22 @@
     El uso de redes neuronales de funciones lineales limitan las dimensiones o parámetros que se pueden trabajar en conjunto para el diseño de estas, ya que en las primeras se busca segmentar la salida a un caso positivo o negativo sobre una línea recta como en la figura~\ref{fig:lin}, cosa que se complica al tener más parámetros de entrada para el análisis como en la figura~\ref{fig:nolin}, este caso se presenta en las imágenes al tener como entradas más de una dimensión para el análisis dejando un sistema más complejo, debido a esto es que se plantean las RNC que además de tener una capa de entrada densa tiene la particularidad de usar redes simples que extraen características particulares, las cuales pasan a otras neurona que agrupa dichas características para determinar un patrón complejo sobre la imagen.\\
     Esta propiedad se aplica a la visión por computadora donde tratamos de imitar la manera en que determinamos que algo es una manzana o un perro, si bien existen procesos que ya se encarga de realizar dicho entrenamiento la implementación de un sistema donde podamos hacer play, pausa, subir volumen o bajarlo es lo que se plantea en este proyecto, donde el enfoque que se tiene al mandar estos comandos a un reproductor pudiera manejarse de otra manera, bajo otras circunstancias para que los comando o pose de la mano que se realicen generen una salida distinta sobre un sistema; El proque hacer uso de esto cuando existen otras opciones bien podría ser porque esto es un comando a distancia donde no se tiene que tocar el dispositivo para interactuar con el, aunque tambien podemos hacer uso de los comandos por voz, esta propuesta puede fungir como complemento en los ambientes de mucho ruido donde no se factible distinguir la activación de los comandos debido a el ambiente, esta situacion se presenta sobre todo si las bocinas y el micrófono se encuentran cerca en el mismo dispositivo, debido a esto se puede hacer uso de estos comandos para crear un sistema más robusto que responda a mas tipos de ambientes en la vida cotidiana de los usuarios  generado una mayor comodidad en el uso de los dispositivos.\\
     Se puede hacer énfasis en que es un comando a distancia donde puede resultar más fácil realizar una seña con la mano para generar una reacción del dispositivo comparando con el tener que gritar para hacer llegar la voz hasta el dispositivo, aunado a  esto se debe decir que como todo tiene limitantes ya que requerimos de estar capturando imágenes de manera constante, también se debe ser visibles para la cámara o mejor dicho estar en una posición donde las capturas de la cámara sean aceptables, que no es algo que sea imposible, con esto podemos decir que principalmente brinda una manera distinta de realizar comandos específicos a problemas específicos, solucionando problemas en ambientes de mucho ruido.
-
     \begin{figure}[H]
         \centering
-        \includegraphics[width=0.4 \linewidth]{\lineal}
+        \includegraphics[width=0.35 \linewidth]{\lineal}
         \caption{Conjunto separable linealmente}
         \label{fig:lin}
     \end{figure}
 
     \begin{figure}[H]
         \centering
-        \includegraphics[width=0.4 \linewidth]{\nolineal}
+        \includegraphics[width=0.35 \linewidth]{\nolineal}
         \caption{Conjunto no separable de manera lineal}
         \label{fig:nolin}
     \end{figure}
+
+    Cualquier sistema en general agrupa una variedad de elementos los cuales desempeñan diferentes tareas que, en conjunto, son capaces de realizar procesos con gran complejidad. Para cualquier sistema será necesario otorgarle una entrada de la cual se esperará un resultado dependiendo del sistema ya que en algunos casos estas entradas pueden ser objetos o materia que debe ser procesada y en otros se debe manipular información con la cual se espera obtener otro tipo de resultados tal que estos sirvan para regular otros procesos consecuentes por ejemplo. Para que se pueda recolectar información, el sistema debe contar con sensores de los cuales obtendrá esa comunicación con el entorno que lo rodea de forma que pueda capturar toda la información necesaria para llegar a un resultado satisfactorio, con lo mencionado se puede concluir que cualquier sistema permanece aislado del entorno que lo rodea a menos que se le proporcione un medio para interactuar con su entorno.\\
+	Los sistemas automatizados hacen uso de sensores con los cuales pueden mantener un control sobre el proceso que llevan a cabo, estos sensores convierten la información del medio físico en señales que pueda interpretar, el problema es que estas son limitadas sumado a que los sistemas no son capaces de inferir sobre los datos para obtener mejores resultados lo que se vuelven inadecuados en determinadas aplicaciones, una de ellas es el reconocimiento de objetos. La forma más utilizada para reconocer elementos del entorno es utilizando sensores de luz con los cuales se pueden llegar a identificar colores entre otros patrones, sin embargo, esto no es suficiente para dotar a un sistema la capacidad de reconocer patrones sobre su entorno.
 
     \section{Estado del arte.}
     La redes convolucionales han tenido una gran auge, ya que pesar de que la teoría de la relación entre el procesamiento de datos de un cerebro biológico y su homologación con el procesamiento de datos por un microprocesador se tenía claro que no existe comparación ya que hay una cantidada mucho mayor de neuronas en un cerebro biológico que microprocesadores en una computadora actual, pero los procesadores cuentan con la capacidada de poseer mayor velocidad ya que como menciona A. Moreno en su tesis el valor de este procesamiento en los humanos es de milisegundo mientras que en la electrónica moderna es de nanosegundos, cosa que brinda una ventaja palpable en el hecho de necesitar poco más de un siglo entre la propuesta de las teorías de estudio del trabajo pionero de Ramón y Cajal en la disertación de la neurona, además de poder hacer énfasis en que fue aún menos tiempo entre las propuestas de Hubel y Wiesel acerca de la corteza visual para tener propuestas y algoritmos que trabajan con el hardware actual para realizar dichas tareas, cosa que puede dejarse ver a través de la historia tomo menos tiempo la evolución de aquellas partes biológicas que estos algoritmos aplicables\cite{artola2019clasificacion}.\\
@@ -178,7 +185,8 @@
     Python es el lenguaje de programación más usado para inteligencia artificial, esto debido a que se tiene una inmensidad de librerías y frameworks con lo que se pueden trabajar, en el caso de este proyecto se usará yolo V8 desarrollado por Ultralytics que a grandes rasgos es el modelo de RNC en su versión 8 con el que se entrenó nuestro modelo gracias a su diversificación de fases que consta de clasificar, segmentar, seguir y detectar una pose.\\ 
     Al ser un modelo de código abierto se tiene diferentes formas en que se ha mejorado a lo largo de tiempo, pero como se menciona en YOLOv3 An incremental improvement\cite{redmon2018yolov3} cada versión es un puñado de mejoras que lo hacen funcionar de mejor manera, haciendo uso de diferentes técnicas, funciones de activación, procesamiento por lotes, capas de convolución y submuestreo que en conjunto funciona mejoran el desempeño de la RNC, junto a librerías como numpy, pandas, keras y darknet es que funciona.\\ 
     En particular Darknet es interesante debido a que se basa en yolo pero es una “traducción a C” lo que como bien sabemos es hacer un mejor uso de recurso del hardware al tener mayor control sobre tipos de datos, estructuras de datos, apuntadores y en general mejor manejo de memoria, que para las redes neuronales es valioso, podemos definir que es una optimización de yolo que se implementa al hacer uso de este, tomando como referencia algo similar podemos mencionar a mamba que es la versión en C de Anaconda un manejador de entornos virtuales para Python, con lo que está basado y optimizados para Python pero funciona en C o interactúan con  la memoria a través del lenguaje de programación C, esto junto a COCO la cual es un dataset enorme que se usó para pre entrenar el modelo hacen de yolo una opción necesaria para avanzar todo el trabajo que hay al querer implementar nuestro proyecto de comandos a través de imágenes. 
-    \clearpage
+    
+    %\clearpage
 
 %Metodologia
     \section{Metodología.}
@@ -189,13 +197,13 @@
 
 	\begin{figure}[H]
         \centering
-		\begin{subfigure}{0.5\linewidth}
+		\begin{subfigure}{0.8\linewidth}
 			\includegraphics[width=\linewidth]{\dst}
 			\caption{Captura de imágenes}
 			\label{sub:create_dataset}
 		\end{subfigure}
 
-        \begin{subfigure}{0.5\textwidth}
+        \begin{subfigure}{0.8\textwidth}
             \includegraphics[width=\linewidth]{\pro}
             \caption{Remarcado y etiquetado}
             \label{sub:label_prcss}
@@ -219,7 +227,8 @@
 
 	\subsection{Control de medios.}
 	Existe una gran cantidad de librerías que proporciona la comunidad de Python, entre estas existen algunas que nos brindan control sobre las funcionalidades del sistema operativo y sobre los medios. Como primera instancia se realizó un programa para el control del audio maestro en el ordenador utilizando la librería pycaw, la cual otorga algunos métodos sobre el control de audio. Otra librería importante es pyautogui la cual permite simular algunas opciones de teclas usadas en el sistema operativo, usándola podemos simular el control del botón play/pause, uno de los comandos por defecto de teclado que nos entregará el control de reproducción sobre cualquier aplicación que reproduzca audio en el ordenador.
-    \clearpage
+    
+    %\clearpage
 
 	\lstinputlisting[language=Python]{\code}
 	En resumen, el código obtiene el parámetro requerido que puede ser cualquiera de las 4 opciones(reproducción, pausa, subir o bajar volumen), en función de dicha entrada realizará una de dichas acciones, la entrada es resultante del proceso de predicción de la red neuronal entrenada.
@@ -230,25 +239,25 @@
 	\begin{figure}[H]
         \centering
 
-		\begin{subfigure}{0.38\linewidth}
+		\begin{subfigure}{0.5\linewidth}
 			\includegraphics[width=\linewidth]{\yolA}
 			\caption{Prueba para play}
 			\label{sub:play}
 		\end{subfigure}
 
-		\begin{subfigure}{0.37\linewidth}
+		\begin{subfigure}{0.5\linewidth}
 			\includegraphics[width=\linewidth]{\yolB}
 			\caption{Prueba para pause}
 			\label{sub:pause}
 		\end{subfigure}
 
-		\begin{subfigure}{0.38\linewidth}
+		\begin{subfigure}{0.5\linewidth}
 			\includegraphics[width=\linewidth]{\yolC}
 			\caption{Prueba para V-}
 			\label{sub:v+}
 		\end{subfigure}
 
-		\begin{subfigure}{0.37\linewidth}
+		\begin{subfigure}{0.5\linewidth}
 			\includegraphics[width=\linewidth]{\yolD}
 			\caption{Prueba para V+}
 			\label{sub:v-}
@@ -276,6 +285,7 @@
 		\end{subfigure}
 		\caption{Pruebas con el LCD}
 	\end{figure}
+
 	\clearpage
 
 	\section{Análisis de resultados.}
