@@ -30,6 +30,10 @@
 \definecolor{Cabeceraverde}{HTML}{008080}
 \definecolor{CabeceraTomate}{HTML}{FF4500}
 
+\definecolor{mygreen}{RGB}{0,128,0}
+\definecolor{mygray}{RGB}{128,128,128}
+\definecolor{mymauve}{RGB}{128,0,128}
+
 
 
 %cabecera
@@ -43,13 +47,20 @@
 
 \newcommand{\lineal}{img/lineal.png}
 \newcommand{\nolineal}{img/nol.png}
-% \newcommand{\}{img/}
-% \newcommand{\}{img/}
-% \newcommand{\}{img/}
-% \newcommand{\}{img}
+\newcommand{\ardA}{img/ard_1.png}
+\newcommand{\ardB}{img/ard_2.png}
+\newcommand{\ardC}{img/ard_3.png}
+\newcommand{\boxF}{img/BoxF1_curve.png}
+\newcommand{\boxP}{img/BoxP_curve.png}
+\newcommand{\dst}{img/create_dst.png}
+\newcommand{\pro}{img/label_procss.png}
+\newcommand{\yolA}{img/test_yolo.png}
+\newcommand{\yolB}{img/test_yolo1.png}
+\newcommand{\yolC}{img/test_yolo2.png}
+\newcommand{\yolD}{img/yolo_test3.png}
+\newcommand{\yolE}{img/yolo_comand.png}
 
-% \newcommand{\codeA}{code/}
-% \newcommand{\codeB}{code/}
+\newcommand{\code}{code/audio.py}
 
 
 %gestion de hipervinculos
@@ -63,18 +74,26 @@
 }
 %gestor de codigo
 \lstset{
-    language=Matlab,
-    basicstyle=\ttfamily,
-    keywordstyle=\color{CabeceraAcero},
-    commentstyle=\color{green!50!black},
-    stringstyle=\color{CabeceraTomate},
-    numbers=left,
-    numberstyle=\tiny,
-    numbersep=5pt,
-    frame=single,
+    language=Python,
+    basicstyle=\ttfamily\small,
+    commentstyle=\color{mygreen},
+    keywordstyle=\color{mymauve},
+    numberstyle=\tiny\color{mygray},
+    stringstyle=\color{CabeceraAcero},
     breaklines=true,
+    showstringspaces=false,
+    frame=tb,
+    numbers=left,
+    aboveskip=6mm,
+    belowskip=6mm,
+    xleftmargin=8mm,
+    framexleftmargin=8mm,
+    columns=flexible,
+    tabsize=4,
+    extendedchars=true,
+    inputencoding=utf8,
+    captionpos=b,
     breakatwhitespace=true,
-    tabsize=2
 }
 
 %Encabezado
@@ -144,64 +163,144 @@
 
     \subsection{Capas.}
     La manera más fácil de comprender todo el proceso que realiza una RNC es haciendo una división por capas, lo que proporciona una abstracción de todos los procesos que se llevan en conjunto y nos permite comprender a gran escala que es lo que se hace por dentro. Partimos de que para cada pixel se requiere tener una neurona dedicada a reconocer que es lo que hay en cada uno de ellos, lo que hace crecer la RNC de una manera acelerada al tener una imagen con mayor cantidad de pixeles o detalles y colores, debido a esto es que se deben de tratar los data set minimizando la cantidad de neuronas que ocuparemos para obtener un resultado aceptable de la tarea, dicho eso podemos organizar el proceso de la tarea e 3 capas. 
+
     \begin{itemize}
     \item Entrada: en esta capa es donde se define la cantidad de neuronas que utilizaremos esto depende de la cantidad de pixeles y el canal de color si es que se requiere, una vez estructurada la red pasamos a la siguiente capa. 
-    \item Extracción de datos: aquí casi todo el trabajo detallado anteriormente, ya que se genera las convoluciones de las neuronas simples a través de la matrices núcleo, pero como se mencionó se creen diferentes mapas de bits de cada una de las matrices núcleos debido a esto se hace uno de un subsampling, para agrupar y extraer las características más importantes en de cada filtro, usando generalmente el Max-Pooling.  
+
+    \item Extracción de datos: aquí casi todo el trabajo detallado anteriormente, ya que se genera las convoluciones de las neuronas simples a través de la matrices núcleo, pero como se mencionó se creen diferentes mapas de bits de cada una de las matrices núcleos debido a esto se hace uno de un subsampling, para agrupar y extraer las características más importantes en de cada filtro, usando generalmente el Max-Pooling.\\
+
     Usando como ejemplo el siguiente caso, podemos suponer que se realiza una Max-Pooling de tamaño 2x2 se recorrerán 32 imágenes de características obtenidas de una imagen de 50x50 píxeles de izquierda a derecha, arriba-abajo, pero en lugar de a un solo píxel, como se toma en las convoluciones, se tomarán de 2x2, es decir 2 de alto por 2 de ancho, solo para preservar el valor más elevado de esos 4 pixeles, de ahí el término Máx. En este caso, usando 2x2 la imagen resultante se reduce a la mitad y quedará una de 25x25 píxeles. Después de este proceso de subsampling quedan 32 imágenes de 25x25, pasando de haber tenido 80.000 neuronas a 20.000. El descenso es considerable y teóricamente almacenan la información más importante para detectar las características deseadas. de esta manera es como decimos que agrupamos características de neuronas simples a neuronas más complejas ya que extraen y agrupan dichas características para la siguiente convolución, haciendo que cada convolución vea patrones de mayor relevancia, así como con más complejidad. 
+
     \item Clasificación: esta capa recibe patrones complejos para determinar las probabilidades de que algo sea relevante para el patrón final que determinará la salida o clasificación del objeto, se podría considerar la capa superior que toma la decisión de los porcentajes de la salida según la capa de entrada. 
     \end{itemize}
 
     \subsection{Librerías.}
-    Python es el lenguaje de programación más usado para inteligencia artificial, esto debido a que se tiene una inmensidad de librerías y frameworks con lo que se pueden trabajar, en el caso de este proyecto se usará yolo V8 desarrollado por Ultralytics que a grandes rasgos es el modelo de RNC en su versión 8 con el que se entrenó nuestro modelo gracias a su diversificación de fases que consta de clasificar, segmentar, seguir y detectar una pose.  
+    Python es el lenguaje de programación más usado para inteligencia artificial, esto debido a que se tiene una inmensidad de librerías y frameworks con lo que se pueden trabajar, en el caso de este proyecto se usará yolo V8 desarrollado por Ultralytics que a grandes rasgos es el modelo de RNC en su versión 8 con el que se entrenó nuestro modelo gracias a su diversificación de fases que consta de clasificar, segmentar, seguir y detectar una pose.\\ 
     Al ser un modelo de código abierto se tiene diferentes formas en que se ha mejorado a lo largo de tiempo, pero como se menciona en YOLOv3 An incremental improvement\cite{redmon2018yolov3} cada versión es un puñado de mejoras que lo hacen funcionar de mejor manera, haciendo uso de diferentes técnicas, funciones de activación, procesamiento por lotes, capas de convolución y submuestreo que en conjunto funciona mejoran el desempeño de la RNC, junto a librerías como numpy, pandas, keras y darknet es que funciona.\\ 
-    En particular Darknet es interesante debido a que se basa en yolo pero es una “traducción a C” lo que como bien sabemos es hacer un mejor uso de recurso del hardware al tener mayor control sobre tipos de datos, estructuras de datos, apuntadores y en general mejor manejo de memoria, que para las redes neuronales es valioso, podemos definir que es una optimización de yolo que se implementa al hacer uso de este, tomando como referencia algo similar podemos mencionar a mamba que es la versión en C de Anaconda un manejador de entornos virtuales para Python, con lo que está basado y optimizados para Python pero funciona en C o interactúan con  la memoria a través del lenguaje de programación C, esto junto a COCO la cual es un dataset enorme que se usó para pre entrenar el modelo hacen de yolo una opción necesaria para avanzar todo el trabajo que hay al querer implementar nuestro proyecto de comandos a través de imágenes.  
+    En particular Darknet es interesante debido a que se basa en yolo pero es una “traducción a C” lo que como bien sabemos es hacer un mejor uso de recurso del hardware al tener mayor control sobre tipos de datos, estructuras de datos, apuntadores y en general mejor manejo de memoria, que para las redes neuronales es valioso, podemos definir que es una optimización de yolo que se implementa al hacer uso de este, tomando como referencia algo similar podemos mencionar a mamba que es la versión en C de Anaconda un manejador de entornos virtuales para Python, con lo que está basado y optimizados para Python pero funciona en C o interactúan con  la memoria a través del lenguaje de programación C, esto junto a COCO la cual es un dataset enorme que se usó para pre entrenar el modelo hacen de yolo una opción necesaria para avanzar todo el trabajo que hay al querer implementar nuestro proyecto de comandos a través de imágenes. 
+    \clearpage
 
-
+%Metodologia
     \section{Metodología.}
-    
-    \section{Análisis de resultados.}
+    El planteamiento que se sigue en este documento se basa en el entrenamiento de la red You Only Look Once para la detección y reconocimiento de señas hechas con las manos a fin de reconocerlas y aplicarlas como comandos para el control de audio en un computador. A continuación se detallan los pasos realizados para entrenar y configurar la red.
 
-    \section{Conclusión}
-    \printbibliography
+	\subsection{Recolección y tratamiento de los datos.}
+	Las redes convolucionales requieren de una gran cantidad de información, al tener que trabajar con imágenes que poseen varias características es que a la red se le debe proporcionar diferentes datos para entrenamiento, con el fin de mejorar la precisión y confiabilidad en la red. Para este caso se necesita un conjunto particular de datos en los que se tengan determinadas posiciones en las manos, estas servirán para señalizar los controles de medios en el ordenador de las que se eligieron las siguientes propuestas: Mano totalmente abierta o cerrada para la reproducción o pausa, mano abierta con dedo pulgar retraído para aumentar el volumen y mano cerrada con pulgar estirado para reducir el volumen. Para la recolección se realizó un pequeño programa en Python el cual utiliza OpenCV para la captura de imágenes en tiempo real (Figura~\ref{sub:create_dataset}), además de usar Mediapipe(Machine learning) para realizar un seguimiento de las manos, de modo que se pueda obtener una mejor captura y un tratamiento como: ajuste de resolución, medidas y encuadramiento para una mejor detección, se recolectaron en total 160 imágenes por cada señal, haciendo un total de 640 de las cuales se utilizaron 560 para el entrenamiento y 80 para validación. Concluida la tarea de recolección, pasamos al proceso de etiquetado, usando la herramienta labelme, remarcamos el contorno de cada imagen, añadiendo las correspondientes etiquetas(Figura~\ref{sub:label_prcss}).
+
+	\begin{figure}[H]
+        \centering
+		\begin{subfigure}{0.5\linewidth}
+			\includegraphics[width=\linewidth]{\dst}
+			\caption{Captura de imágenes}
+			\label{sub:create_dataset}
+		\end{subfigure}
+
+        \begin{subfigure}{0.5\textwidth}
+            \includegraphics[width=\linewidth]{\pro}
+            \caption{Remarcado y etiquetado}
+            \label{sub:label_prcss}
+        \end{subfigure}
+    \caption{Proceso de creación del set de datos}
+	\end{figure}
+
+	Al remarcar y etiquetar las imágenes, la herramienta labelme generará un archivo tipo JSON, dónde se encuentran las etiquetas y los puntos generados previamente, además de incluir algunos otros datos, sin embargo, la red YOLO unicamente acepta el formato .txt donde se indiquen los puntos remarcados en el proceso de etiquetado. Para hacer la conversión se utilizó la herramienta labelme2yolo la cual realiza esta tarea de forma automática. Al usar la herramienta nos arrojará una carpeta con dos carpetas dentro y un archivo de tipo yaml. Las carpetas generadas contienen las imágenes del set de datos y las etiquetas generadas con extensión .txt, el archivo yaml es requerido por la red, tiene el objetivo de indicarle donde encontrar los archivos de entrenamiento y validación respectivamente.
+
+	\subsection{Entrenamiento de la red neuronal.}
+	Con el set de datos completo, podemos proceder al entrenamiento de la red neuronal YOLO, para comenzar es necesario conseguir la librería Ultralytics de Python, dónde obtendremos la herramienta para el entrenamiento, opcionalmente se puede instalar PyTorch con la cual es posible trabajar utilizando la tarjeta gráfica del computador, acelerando el proceso de entrenamiento, aunque se puede optar por usar la CPU en este caso se opto por incluirlo. Para comenzar el entrenamiento utilizamos el comando yolo, indicándole los parámetros deseados para comenzar el entrenamiento(figura~\ref{fig:yolo_train}).
+	
+	\begin{figure}[H]
+		\centering
+		\includegraphics[width=0.98 \linewidth]{\yolE}
+		\caption{Proceso de entrenamiento de la red YOLO, en los parámetros se indican de izquierda a derecha: tarea de segmentación, modo de entrenamiento, 60 épocas, ruta del set de datos, versión requerida, resolución de las imágenes y cantidad de imágenes para la tarea}
+		\label{fig:yolo_train}
+	\end{figure}
+
+	Este proceso arrojará una carpeta donde se tendrán los resultados del entrenamiento, mostrando la matriz de confusión, las gráficas de precisión, una carpeta con los archivos de pesos obtenidos del entrenamiento, algunas de las imágenes para la validación entre otras cosas útiles para el análisis de los resultados. Lo más importante dentro de la carpeta son los archivos que contienen los pesos cuya extensión es .pt, existen dos archivos los cuales son best y last, siendo el archivo best quien contiene los pesos que entregan mejores resultados. 
+
+	\subsection{Control de medios.}
+	Existe una gran cantidad de librerías que proporciona la comunidad de Python, entre estas existen algunas que nos brindan control sobre las funcionalidades del sistema operativo y sobre los medios. Como primera instancia se realizó un programa para el control del audio maestro en el ordenador utilizando la librería pycaw, la cual otorga algunos métodos sobre el control de audio. Otra librería importante es pyautogui la cual permite simular algunas opciones de teclas usadas en el sistema operativo, usándola podemos simular el control del botón play/pause, uno de los comandos por defecto de teclado que nos entregará el control de reproducción sobre cualquier aplicación que reproduzca audio en el ordenador.
+    \clearpage
+
+	\lstinputlisting[language=Python]{\code}
+	En resumen, el código obtiene el parámetro requerido que puede ser cualquiera de las 4 opciones(reproducción, pausa, subir o bajar volumen), en función de dicha entrada realizará una de dichas acciones, la entrada es resultante del proceso de predicción de la red neuronal entrenada.
+
+	\subsection{Pruebas de funcionamiento.}
+	Al conseguir los pesos para la red neuronal, es posible exportarlos para realizar pruebas, la librería Ultralytics permite instanciar el modelo en un objeto, este solo requiere de dichos pesos para poder funcionar de acuerdo al entrenamiento realizado. Para hacer las pruebas nuevamente se realizó un seguimiento de la mano para obtener mejores entradas y que se adecuaran con los datos de entrenamiento, estas fueron pasadas al modelo y con ayuda de las funciones del mismo, se obtuvieron las predicciones al mostrarlas en la pantalla junto con el seguimiento de la mano.
+
+	\begin{figure}[H]
+        \centering
+
+		\begin{subfigure}{0.38\linewidth}
+			\includegraphics[width=\linewidth]{\yolA}
+			\caption{Prueba para play}
+			\label{sub:play}
+		\end{subfigure}
+
+		\begin{subfigure}{0.37\linewidth}
+			\includegraphics[width=\linewidth]{\yolB}
+			\caption{Prueba para pause}
+			\label{sub:pause}
+		\end{subfigure}
+
+		\begin{subfigure}{0.38\linewidth}
+			\includegraphics[width=\linewidth]{\yolC}
+			\caption{Prueba para V-}
+			\label{sub:v+}
+		\end{subfigure}
+
+		\begin{subfigure}{0.37\linewidth}
+			\includegraphics[width=\linewidth]{\yolD}
+			\caption{Prueba para V+}
+			\label{sub:v-}
+		\end{subfigure}
+
+		\caption{Resultados de las predicciones del modelo entrenado}
+	\end{figure}
+
+	\subsection{Implementación de resultados.}
+	Comprobado el funcionamiento, se procedió a implementar la red de modo que controlara los medios del ordenador, para verificar el funcionamiento más adecuadamente, se empleó una pantalla LCD en la cual se despliegan las opciones detectadas por la red, de modo que, cuando se detecta una opción, un microcontrolador desplegará en un LCD la conclusión obtenida.
+
+	\begin{figure}[H]
+		\begin{subfigure}[h]{0.5\textwidth}
+			\includegraphics[scale = 1.18]{\ardA}
+			\caption{Acción de reproducción/pausa}
+		\end{subfigure}
+		\begin{subfigure}[h]{0.5\textwidth}
+			\includegraphics{\ardB}
+			\caption{Reducción del volumen}
+		\end{subfigure}
+		\begin{subfigure}[h]{1\textwidth}
+			\centering
+			\includegraphics{\ardC}
+			\caption{Aumento de volumen}
+		\end{subfigure}
+		\caption{Pruebas con el LCD}
+	\end{figure}
+	\clearpage
+
+	\section{Análisis de resultados.}
+	La herramienta para el entrenamiento proporciona en su salida una serie de archivos con los resultados del entrenamiento, dichos elementos hacen más fácil el análisis detallado sobre el desempeño de la red neuronal.\\
+    Primero hay que analizar las curvas de confianza.
+
+	\begin{figure}[H]
+        \centering
+		\begin{subfigure}{0.45\linewidth}
+			\includegraphics[width=\linewidth]{\boxF}
+			\label{F1_curve}
+			\caption{Exactitud del modelo}
+		\end{subfigure}
+		\begin{subfigure}{0.45\linewidth}
+			\includegraphics[width=\linewidth]{\boxP}
+			\label{P_curve}
+			\caption{Precisión del modelo}
+		\end{subfigure}
+		\caption{Curvas de confianza}
+	\end{figure}
+
+	Con estas gráficas es posible visualizar que la exactitud del modelo aumenta cuando el valor de confianza es bajo en la mayoría de los casos y que la precisión aumenta cuando la confianza del modelo es mayor, sobre la gráfica de exactitud podemos concluir en que ciertos traslapes en la identificación de las formas, lo cual es entendible pues de cierta forma son muy parecidas las formas que debe identificar como cuando la mano está totalmente abierta y cuando la mano está abierta pero con el pulgar enroscado, por lo que existirá cierto traslape en algunas de las posiciones donde habrá error, para mejorar el reconocimiento se debería optar por añadir más imágenes para el entrenamiento, ya que 140 son bastante pocas.
+
+    \section{Conclusiones.}
+
 
 \end{document}
 
-
-
-
-
-
-
-
-
-
-    % \begin{equation}
-    %     A = \{ ( x,\mu_{A(x)} )/x \in X \}
-    % \end{equation}
-    % Donde $\mu_{A(x)}$ es una función de pertenencia cuya etiqueta es A y su dominio es $x$
-    .
-    % \begin{figure}[H]
-    %     \centering
-    %     \includegraphics[width=0.8 \linewidth]{\conjuntoD}
-    %     \caption{Conjuntos difusos}
-    %     \label{fig:conjuntoD}
-    % \end{figure}
-
-    %\clearpage
-    % \lstinputlisting[caption={Ejemplo de código MATLAB.}, label=lst:fis, title={ código 1 : Archivo del sistema de control difuso Mamdani}]{\codeB}
-
-    % \begin{figure}[H]
-    %     \centering
-    %     \begin{subfigure}{0.8\linewidth}
-    %         \includegraphics[width=\linewidth]{\luz}
-    %         \caption{Conjunto difuso luz}
-    %         \label{sub:luz}
-    %     \end{subfigure}
-    %     \begin{subfigure}{0.8\linewidth}
-    %         \includegraphics[width=\linewidth]{\temperatura}
-    %         \caption{Conjunto difuso temperatura}
-    %         \label{sub:temp}
-    %     \end{subfigure}
-    %     \caption{Entradas}
-    %     \label{fig:nter}
-    % \end{figure}
